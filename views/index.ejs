@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Todo App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <header class="jumbotron">
+            <div class="container">
+                <h1>Welcome To Todo App!</h1>
+            </div>
+        </header>
+
+        <!-- Add New todo -->
+        <h2>Add new todo</h2>
+        <form class="form-inline" action="/api/todos/" method="POST">
+            <div class="form-group">
+                <input class="form-control" type="text" name="title" placeholder="title">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="description" placeholder="description">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit!</button>
+            </div>
+        </form>
+
+        <!-- All todos -->
+        <h2>All Todos</h2>
+        <div class="row text-center">
+            <% todos.forEach((todo) => { %>
+                <div class="col-md-3 col-sm-6">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <p>Id:  <%= todo._id %></p>
+                            <p>Title: <%= todo.title %></p>
+                            <p>Description: <%= todo.description %></p>
+                            <p>Due: <%= moment(todo.dueDate).format('ll') %></p>
+                            <p>Completed: <%= todo.isCompleted ? 'Yes' : 'No' %></p>
+                            <ul>
+                                <% todo.files && todo.files.forEach((filename) => { %>
+                                    <li>
+                                        <a href="/api/todos/<%=todo._id%>/file/<%=filename%>">
+                                            <%=filename%>
+                                        </a>
+                                        <form action="/api/todos/<%=todo._id%>/file/<%=filename%>?_method=DELETE" method="POST">
+                                            <button type="submit" class="btn btn-danger">Delete File</button>
+                                        </form>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                            <form class="form-inline" action="/api/todos/<%=todo._id%>/file" enctype="multipart/form-data" method="POST">
+                                <div class="form-group">
+                                    <input type="file" name="file">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Add new file!</button>
+                                </div>
+                            </form>
+                    
+                        </div>
+                        <form action="/api/todos/<%=todo._id%>/toggleCompleted?_method=PUT" method="POST">
+                            <button type="submit" class="btn btn-<%= todo.isCompleted ? 'warning' : 'success' %>">
+                                <%= todo.isCompleted ? 'Set pending' : 'Set completed' %>
+                            </button>
+                        </form>
+                        <form action="/api/todos/<%=todo._id%>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                        <p>
+                            <a href="/api/todos/<%= todo._id %>" class="btn btn-primary">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html>
