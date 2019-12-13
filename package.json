@@ -1,13 +1,10 @@
 {
-  "name": "devconnector",
+  "name": "todo",
   "version": "1.0.0",
-  "description": "Social network for developers",
+  "description": "Todo App",
   "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "dev": "\"npm run server\""
+    "start": "node server.js"
   },
   "author": "Muhammed Kilicarslan",
   "license": "MIT",
